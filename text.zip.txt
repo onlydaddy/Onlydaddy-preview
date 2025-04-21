@@ -1,0 +1,107 @@
+/* Base styles */
+:root {
+    --primary-color: #ff3366;
+    --bg-dark: #0d0d0d;
+    --bg-light: #f8f8f8;
+    --text-dark: #ffffff;
+    --text-light: #111111;
+    --accent-dark: rgba(255, 51, 102, 0.5);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-image: radial-gradient(circle at center, #1a1a1a, #000);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+    text-align: center;
+    padding: 40px 30px;
+    max-width: 600px;
+    width: 90%;
+    border: 2px solid var(--primary-color);
+    border-radius: 15px;
+    background-color: rgba(20, 20, 20, 0.95);
+    box-shadow: 0 0 25px var(--accent-dark);
+    transition: all 0.3s ease-in-out;
+}
+
+.logo {
+    font-size: 2.8em;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.secure-icon {
+    font-size: 3em;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 1.7em;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #ccc;
+}
+
+.footer {
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        padding: 30px 20px;
+    }
+
+    .logo {
+        font-size: 2.2em;
+    }
+
+    h1 {
+        font-size: 1.4em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+}
+
+/* Light Mode Support */
+body.light-mode {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    background-image: none;
+}
+
+body.light-mode .container {
+    background-color: #ffffff;
+    color: var(--text-light);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .footer {
+    color: #999;
+}
+
+body.light-mode p {
+    color: #333;
+}

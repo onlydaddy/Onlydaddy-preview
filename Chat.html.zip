@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Room - wizzrollintwen.org</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- Using Socket.IO from CDN -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            padding: 20px;
+        }
+        #chat {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #message_wrapper {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #message_input {
+            width: 80%;
+            padding: 10px;
+        }
+        #send_button {
+            width: 15%;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat">
+        <h2>Chat Room for wizzrollintwen.org</h2>
+        <div id="message_wrapper"></div>
+        <input id="message_input" type="text" placeholder="Enter your message..." autocomplete="off"/>
+        <button id="send_button">Send</button>
+    </div>
+    
+    <script>
+        $(document).ready(function(){
+            // Connect to the Socket.IO server
+            var socket = io();
+
+            // Prompt the user for a username and join the default room
+            var username = prompt('Enter your username: ');
+            var room = 'main'; // You can change rooms or extend to multiple rooms
+
+            // Tell the server that the user has joined
+            socket.emit('join', {username: username, room: room});
+            
+            // Listen for status updates (e.g., users joining/leaving)
+            socket.on('status', function(data){
+                $('#message_wrapper').append('<div style="color: gray;">' + data.msg + '</div>');
+                $('#message_wrapper').scrollTop($('#message_wrapper')[0].scrollHeight);
+            });
+
+            // Listen for incoming chat messages
+            socket.on('message', function(data){
+                $('#message_wrapper').append('<div><strong>' + data.username + ':</strong> ' + data.msg + '</div>');
+                $('#message_wrapper').scrollTop($('#message_wrapper')[0].scrollHeight);
+            });
+
+            // Send a chat message when the send button is clicked
+            $('#send_button').click(function(){
+                var msg = $('#message_input').val();
+                if(msg.trim().length > 0){
+                    socket.emit('text', {username: username, msg: msg, room: room});
+                    $('#message_input').val('');
+                }
+            });
+
+            // Also send message on pressing Enter key
+            $('#message_input').keypress(function(e){
+                if(e.which == 13){
+                    $('#send_button').click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
